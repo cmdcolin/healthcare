@@ -26,6 +26,7 @@ const bodiesWithUterus = {
     { data: { id: '5.2', name: 'STI' } },
   ],
   edges: [
+    { data: { source: 'uterus', target: '4' } },
     { data: { source: '4', target: 'pregnancy' } },
     { data: { source: '4', target: '5.2' } },
   ],
@@ -38,20 +39,35 @@ const pregnancy = {
     { data: { id: 'birth_control_no', name: 'No' } },
   ],
   edges: [
+    { data: { source: 'pregnancy', target: '5.1' } },
     { data: { source: '5.1', target: 'birth_control_yes' } },
     { data: { source: '5.1', target: 'birth_control_no' } },
   ],
 }
 
-const when = {
+const whenBc = {
   nodes: [
-    { data: { id: '7.1', name: 'When did sex occur?' } },
-    { data: { id: 'under', name: 'Within 5 days (120 hours) ago' } },
-    { data: { id: 'over', name: 'More than one week ago' } },
+    { data: { id: 'when_occur', name: 'When did sex occur?' } },
+    { data: { id: 'underBc', name: 'Within 5 days (120 hours) ago' } },
+    { data: { id: 'overBc', name: 'More than one week ago' } },
   ],
   edges: [
-    { data: { source: '7.1', target: 'over' } },
-    { data: { source: '7.1', target: 'under' } },
+    { data: { source: 'birth_control_no', target: 'when_occur' } },
+    { data: { source: 'when_occur', target: 'overBc' } },
+    { data: { source: 'when_occur', target: 'underBc' } },
+  ],
+}
+
+const whenNoBc = {
+  nodes: [
+    { data: { id: 'when_occur', name: 'When did sex occur?' } },
+    { data: { id: 'underNoBc', name: 'Within 5 days (120 hours) ago' } },
+    { data: { id: 'overNoBc', name: 'More than one week ago' } },
+  ],
+  edges: [
+    { data: { source: 'birth_control_yes', target: 'when_occur' } },
+    { data: { source: 'when_occur', target: 'overNoBc' } },
+    { data: { source: 'when_occur', target: 'underNoBc' } },
   ],
 }
 
@@ -133,26 +149,26 @@ document.addEventListener('DOMContentLoaded', () => {
       cy.layout(layoutOpts).run()
       cy.$('#birth_control_yes').on('tap', () => {
         // cy.elements().remove()
-        cy.add(when)
+        cy.add(whenBc)
         cy.layout(layoutOpts).run()
-        cy.$('#over').on('tap', () => {
+        cy.$('#overBc').on('tap', () => {
           document.getElementById('cy').style.display = 'none'
           document.getElementById('moreinfo').innerHTML = over
         })
-        cy.$('#under').on('tap', () => {
+        cy.$('#underBc').on('tap', () => {
           document.getElementById('cy').style.display = 'none'
           document.getElementById('moreinfo').innerHTML = under
         })
       })
       cy.$('#birth_control_no').on('tap', () => {
         // cy.elements().remove()
-        cy.add(when)
+        cy.add(whenNoBc)
         cy.layout(layoutOpts).run()
-        cy.$('#over').on('tap', () => {
+        cy.$('#overNoBc').on('tap', () => {
           document.getElementById('cy').style.display = 'none'
           document.getElementById('moreinfo').innerHTML = over
         })
-        cy.$('#under').on('tap', () => {
+        cy.$('#underNoBc').on('tap', () => {
           document.getElementById('cy').style.display = 'none'
           document.getElementById('moreinfo').innerHTML = underNoBirthControl
         })
