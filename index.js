@@ -34,12 +34,12 @@ const bodiesWithUterus = {
 const pregnancy = {
   nodes: [
     { data: { id: '5.1', name: 'Are you taking birth control?' } },
-    { data: { id: 'birth_control', name: 'Yes' } },
-    { data: { id: '6.2', name: 'No' } },
+    { data: { id: 'birth_control_yes', name: 'Yes' } },
+    { data: { id: 'birth_control_no', name: 'No' } },
   ],
   edges: [
-    { data: { source: '5.1', target: 'birth_control' } },
-    { data: { source: '5.1', target: '6.2' } },
+    { data: { source: '5.1', target: 'birth_control_yes' } },
+    { data: { source: '5.1', target: 'birth_control_no' } },
   ],
 }
 
@@ -55,17 +55,37 @@ const when = {
   ],
 }
 
-const under = `<div class='message'>
+const underNoBirthControl = `<div class='message'>
 <p class='important'>Emergency contraception</p>
 <ul>
-<li>Paragard IUD aka copper IUD. This IUD can be added as an emergency contraceptive</li>
-<li>Emergency Contraceptive Pill - Levonorgestrel [Plan B One Step, Take Action, My Way, AfterPill, and others]. Works best when taken within 72 hours (3 days) but can work up to 120 hours (5 days). <b>Can be purchased over the counter without a Rx</b></li>
+  <li>Paragard IUD aka copper IUD. This IUD can be added as an emergency contraceptive</li>
+  <li>Emergency Contraceptive Pill [E.M.C.]</li>
+  <ul>
+  <li>Ulipristal Acetate [Ella]</li>
+    <ul>
+      <li>Most effective form of E.M.C.</li>
+      <li>Works up to 120 hours (5 days)</li>
+      <li>Needs a Rx but you can get a fast medical consultation and prescription with next-day delivery from PRJKTRUBY</li>
+    </ul>
+    <li>Levonorgestrel [Plan B One Step, Take Action, My Way, AfterPill, and others]</li>
+    <ul>
+      <li>Works best when taken within 72 hours (3 days) but can work up to 120 hours (5 days)</li>
+      <li>Can be purchased over the counter without a Rx</li>
+    </ul>
+  </ul>
 </ul>`
 
 const over = `<div class='message'>
 <p class='important'>Abortion</p>
 <p>After one week it is important to talk to your doctor. A list of abortion care providers is available at http://google.com</p>
 </div>`
+
+const under = `<div class='message'>
+<p class='important'>Emergency contraception</p>
+<ul>
+<li>Paragard IUD aka copper IUD. This IUD can be added as an emergency contraceptive</li>
+<li>Emergency Contraceptive Pill - Levonorgestrel [Plan B One Step, Take Action, My Way, AfterPill, and others]. Works best when taken within 72 hours (3 days) but can work up to 120 hours (5 days). <b>Can be purchased over the counter without a Rx</b></li>
+</ul>`
 
 const layoutOpts = {
   name: 'dagre',
@@ -111,18 +131,30 @@ document.addEventListener('DOMContentLoaded', () => {
       cy.elements().remove()
       cy.add(pregnancy)
       cy.layout(layoutOpts).run()
-      cy.$('#birth_control').on('tap', () => {
+      cy.$('#birth_control_yes').on('tap', () => {
         cy.elements().remove()
         cy.add(when)
         cy.layout(layoutOpts).run()
         cy.$('#over').on('tap', () => {
-          console.log('here')
           document.getElementById('cy').style.display = 'none'
           document.getElementById('moreinfo').innerHTML = over
         })
         cy.$('#under').on('tap', () => {
           document.getElementById('cy').style.display = 'none'
           document.getElementById('moreinfo').innerHTML = under
+        })
+      })
+      cy.$('#birth_control_no').on('tap', () => {
+        cy.elements().remove()
+        cy.add(when)
+        cy.layout(layoutOpts).run()
+        cy.$('#over').on('tap', () => {
+          document.getElementById('cy').style.display = 'none'
+          document.getElementById('moreinfo').innerHTML = over
+        })
+        cy.$('#under').on('tap', () => {
+          document.getElementById('cy').style.display = 'none'
+          document.getElementById('moreinfo').innerHTML = underNoBirthControl
         })
       })
     })
