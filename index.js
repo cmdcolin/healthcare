@@ -46,8 +46,8 @@ const pregnancy = {
 const when = {
   nodes: [
     { data: { id: '7.1', name: 'When did sex occur?' } },
-    { data: { id: 'over', name: 'Over 5 days (120 hours) ago' } },
-    { data: { id: 'under', name: 'More than one week ago' } },
+    { data: { id: 'under', name: 'Within 5 days (120 hours) ago' } },
+    { data: { id: 'over', name: 'More than one week ago' } },
   ],
   edges: [
     { data: { source: '7.1', target: 'over' } },
@@ -55,7 +55,7 @@ const when = {
   ],
 }
 
-const underNoBirthControl = `<div class='message'>
+const under = `<div class='message'>
 <p class='important'>Emergency contraception</p>
 <ul>
   <li>Paragard IUD aka copper IUD. This IUD can be added as an emergency contraceptive</li>
@@ -65,7 +65,7 @@ const underNoBirthControl = `<div class='message'>
     <ul>
       <li>Most effective form of E.M.C.</li>
       <li>Works up to 120 hours (5 days)</li>
-      <li>Needs a Rx but you can get a fast medical consultation and prescription with next-day delivery from PRJKTRUBY</li>
+      <li>Needs a Rx but you can get a fast medical consultation and prescription with next-day delivery from <a href='https://www.prjktruby.com/'>PRJKTRUBY</a></li>
     </ul>
     <li>Levonorgestrel [Plan B One Step, Take Action, My Way, AfterPill, and others]</li>
     <ul>
@@ -77,10 +77,10 @@ const underNoBirthControl = `<div class='message'>
 
 const over = `<div class='message'>
 <p class='important'>Abortion</p>
-<p>After one week it is important to talk to your doctor. A list of abortion care providers is available at http://google.com</p>
+<p>After one week it is important to talk to your doctor. Consult a list of abortion care providers</p>
 </div>`
 
-const under = `<div class='message'>
+const underNoBirthControl = `<div class='message'>
 <p class='important'>Emergency contraception</p>
 <ul>
 <li>Paragard IUD aka copper IUD. This IUD can be added as an emergency contraceptive</li>
@@ -124,15 +124,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }))
 
   cy.$('#uterus').on('tap', () => {
-    cy.elements().remove()
+    // cy.elements().remove()
     cy.add(bodiesWithUterus)
     cy.layout(layoutOpts).run()
     cy.$('#pregnancy').on('tap', () => {
-      cy.elements().remove()
+      // cy.elements().remove()
       cy.add(pregnancy)
       cy.layout(layoutOpts).run()
       cy.$('#birth_control_yes').on('tap', () => {
-        cy.elements().remove()
+        // cy.elements().remove()
         cy.add(when)
         cy.layout(layoutOpts).run()
         cy.$('#over').on('tap', () => {
@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
       })
       cy.$('#birth_control_no').on('tap', () => {
-        cy.elements().remove()
+        // cy.elements().remove()
         cy.add(when)
         cy.layout(layoutOpts).run()
         cy.$('#over').on('tap', () => {
